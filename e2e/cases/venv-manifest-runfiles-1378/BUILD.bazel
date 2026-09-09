@@ -12,7 +12,7 @@
 #
 # gazelle:ignore
 
-load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library", "py_unittest_test")
+load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library", "py_test", "py_unittest_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 py_library(
@@ -54,4 +54,22 @@ sh_test(
     # child — is only materialized in an unsandboxed runfiles tree.
     local = True,
     deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+# Sourceless runfiles hold only the test's colocated .pyc, so the driver's
+# manifest lookup must fall back to it.
+py_unittest_test(
+    name = "manifest_unittest_sourceless",
+    srcs = ["manifest_unittest_test.py"],
+    precompile = "sourceless",
+    tags = ["manual"],
+    deps = [":firstparty"],
+)
+
+py_test(
+    name = "manifest_sourceless_test",
+    srcs = ["manifest_sourceless_test.py"],
+    data = [":manifest_unittest_sourceless"],
+    # The tree's MANIFEST symlink is only materialized in an unsandboxed runfiles tree.
+    local = True,
 )
