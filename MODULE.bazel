@@ -5,8 +5,9 @@ module(
     compatibility_level = 1,
 )
 
-# NOTE: when publishing to BCR, we patch this to True, as we publish pre-built binaries along with our releases.
-IS_RELEASE = False
+# True matches BCR: git consumers use prebuilt @rules_py_tools and do not
+# register source-built rust venv toolchains (those need rules_rs).
+IS_RELEASE = True
 
 bazel_dep(name = "bazel_features", version = "1.38.0")
 bazel_dep(name = "bazel_lib", version = "3.0.0")
