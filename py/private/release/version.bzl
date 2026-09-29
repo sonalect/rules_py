@@ -4,7 +4,8 @@
 # See https://git-scm.com/docs/git-archive#Documentation/git-archive.txt-export-subst
 _VERSION_PRIVATE = "$Format:%(describe:tags=true)$"
 
-VERSION = "0.0.0" if _VERSION_PRIVATE.startswith("$Format") else _VERSION_PRIVATE.replace("v", "", 1)
+# Fork: git_override checkouts are not `git archive` stamped, so pin the release version.
+VERSION = "1.12.1"
 
 # Whether rules_py is a pre-release, and therefore has no release artifacts to download.
 # NB: When GitHub runs `git archive` to serve a source archive file,
@@ -12,4 +13,4 @@ VERSION = "0.0.0" if _VERSION_PRIVATE.startswith("$Format") else _VERSION_PRIVAT
 # _VERSION_PRIVATE = "v2.0.3-7-g57bfe2c1"
 # From https://git-scm.com/docs/git-describe:
 # > The "g" prefix stands for "git"
-IS_PRERELEASE = VERSION == "0.0.0" or VERSION.find("g") >= 0
+IS_PRERELEASE = False
